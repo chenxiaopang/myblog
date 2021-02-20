@@ -1,9 +1,9 @@
 package xmlrpc;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -13,6 +13,16 @@ import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
 public class XmlRpcTest {
 
+	public static final String TEST_FILE="config/test.md";
+	public static String userDir=null;
+	
+	public static String getUserDir()
+	{
+		if (userDir==null)
+			userDir=System.getProperty("user.dir");
+		return userDir;
+	}
+	
 	public static void main(String[] args) throws XmlRpcException, IOException {
 		// TODO Auto-generated method stub
 		
@@ -24,14 +34,14 @@ public class XmlRpcTest {
 	    config.setServerURL(new URL(url));
 	    XmlRpcClient client = new XmlRpcClient();
 	    client.setConfig(config);
-	    
+	    userDir=getUserDir();
 	    
 		//method metaWeblog.newPost
 		{
 			System.out.println("\n\n**********method metaWeblog.newPost***********\n\n");
 			String title = "Markdown教程";
 			StringBuffer buffer = new StringBuffer();
-	        BufferedReader bf= new BufferedReader(new FileReader("/home/cb/tmp/test.md"));
+	        BufferedReader bf= new BufferedReader(new FileReader(userDir+File.separator+TEST_FILE));
 	        String s = null;
 	        while((s = bf.readLine())!=null){//使用readLine方法，一次读一行
 	            buffer.append(s);
@@ -79,7 +89,7 @@ public class XmlRpcTest {
 			System.out.println("Delete a post: "+title + "  postid=" + postID);
 			// delete a recent post
 			Object[] params1 = new Object[] { "", postID, userName, passWord, true }; 
-			client.execute("blogger.deletePost", params1);
+			//client.execute("blogger.deletePost", params1);
 		}
 		
 		//method metaWeblog.getPost
